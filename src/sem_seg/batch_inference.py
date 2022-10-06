@@ -4,8 +4,8 @@ import sys
 import pcl
 import numpy as np
 import tensorflow as tf
-from model import *
-import indoor3d_util
+from sem_seg.model import *
+import sem_seg.indoor3d_util as indoor3d_util
 import sys
 import logging
 handler = logging.StreamHandler(sys.stdout)

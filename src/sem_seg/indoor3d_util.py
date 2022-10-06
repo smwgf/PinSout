@@ -112,14 +112,14 @@ def sample_data(data, num_sample):
     """
     N = data.shape[0]
     if (N == num_sample):
-        return data, range(N)
+        return data, list(range(N))
     elif (N > num_sample):
         sample = np.random.choice(N, num_sample)
         return data[sample, ...], sample
     else:
         sample = np.random.choice(N, num_sample - N)
         dup_data = data[sample, ...]
-        return np.concatenate([data, dup_data], 0), range(N) + list(sample)
+        return np.concatenate([data, dup_data], 0), list(range(N)) + list(sample)
 
 
 def sample_data_label(data, label, num_sample):

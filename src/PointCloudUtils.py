@@ -604,13 +604,15 @@ def saveAsWKT(roomIndex, ceiling, floor, wall_list):
     """
     global ROOT_PATH
     if len(ROOT_PATH) == 0:
+        
         ROOT_PATH = os.path.join("../data/WKT_RESULT", str(dt.datetime.now()).replace(' ', 'T').split('.')[0])
         if os.path.isdir(ROOT_PATH) == False:
-            os.mkdir(ROOT_PATH)
+            os.mkdir(ROOT_PATH)        
     else:
         ROOT_PATH = os.path.join(ROOT_PATH, "WKT_RESULT")
         if os.path.isdir(ROOT_PATH) == False:
             os.mkdir(ROOT_PATH)
+    print(f'WKT data path: {ROOT_PATH}')
     for room_i in range(len(wall_list)):
         solid_info = "SOLID(("
         ceiling_info = "(("

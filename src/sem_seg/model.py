@@ -5,6 +5,8 @@ import numpy as np
 import os
 import sys
 
+tf.compat.v1.disable_eager_execution()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'utils'))
@@ -21,8 +23,8 @@ def placeholder_inputs(batch_size, num_point):
 
 def get_model(point_cloud, is_training, bn_decay=None):
     """ ConvNet baseline, input is BxNx3 gray image """
-    batch_size = point_cloud.get_shape()[0].value
-    num_point = point_cloud.get_shape()[1].value
+    batch_size = point_cloud.get_shape()[0]
+    num_point = point_cloud.get_shape()[1]
 
     input_image = tf.expand_dims(point_cloud, -1)
     # CONV

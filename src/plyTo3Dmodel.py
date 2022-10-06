@@ -7,7 +7,7 @@ import sys
 import numpy as np
 import math
 from sem_seg import batch_inference
-from sem_seg import Predict
+# from sem_seg import Predict
 # from sem_seg import batch_inference2
 # from sem_seg import batch_inference3
 import PointCloudUtils
@@ -112,8 +112,8 @@ def ply_to_CityGML_Grid(args):
     model_path = os.getcwd()+'/sem_seg/model/log_6cls/model.ckpt'
 
     wall_cloud, door_cloud, window_cloud = batch_inference.evaluate(model_path, out_filename, npy_list, min_list)
-    generate_pointcloud = gpc.GeneratePointCloud(distance_threshold, epsilon_value, wall_cloud, [], [])
-    generate_pointcloud.make_room_info()
+    # generate_pointcloud = gpc.GeneratePointCloud(distance_threshold, epsilon_value, wall_cloud, [], [])
+    # generate_pointcloud.make_room_info()
 
 
 def ply_to_CityGML(args):
@@ -139,7 +139,7 @@ def ply_to_CityGML(args):
     epsilon_value = 0.1
 
     logger.info("Starting Process")
-    print args
+    print(args)
 
     if len(args) == 1:
         logger.info("There is no path for reading the PointCloud")
@@ -169,6 +169,7 @@ def ply_to_CityGML(args):
     for prop in plydata.elements[0].properties:
         if prop.name == 'red' or prop.name == 'blue' or prop.name == 'green':
             has_color = True
+    has_color = False
     # Store the x, y, z points
     x = plydata.elements[0].data['x']
     y = plydata.elements[0].data['y']
@@ -190,6 +191,7 @@ def ply_to_CityGML(args):
     if voxelize:
         # Running the voxelization using voxel size
         xyzrgb_value = PointCloudUtils.grid_subsampling(point_value, color_value, 0.02)
+        # xyzrgb_value = PointCloudUtils.grid_subsampling(point_value, color_value, 0.2)
 
     else:
         xyzrgb_value = np.concatenate((point_value, color_value), axis=1)
@@ -209,11 +211,13 @@ def ply_to_CityGML(args):
 
     npy_list, min_list = make_point_label([xyzrgb_value])
     wall_cloud, door_cloud, window_cloud = batch_inference.evaluate(model_path, out_filename, npy_list, min_list)
-
+    
+    # print(f'point net, wall: {wall_cloud.shape}, door: {door_cloud.shape}, window: {window_cloud.shape}')
     # Starting the generating solution to create Graph
     GeneratePCData = gpc.GeneratePointCloud(distance_threshold, epsilon_value, wall_cloud, door_cloud, window_cloud)
     GeneratePCData.make_room_info()
-
+    
+    return wall_cloud, door_cloud, window_cloud
 
 
 def make_point_label(data_list):

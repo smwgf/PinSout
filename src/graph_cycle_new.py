@@ -2,7 +2,9 @@ import networkx as nx
 import sys
 import logging
 import PointCloudUtils
-import src.citygml.PointCloud_To_CityGML as gml
+make_gml = False
+if make_gml:
+    import citygml.PointCloud_To_CityGML as gml
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(logging.Formatter('%(asctime)s %(funcName)s [%(levelname)s]: %(message)s'))
 logger = logging.getLogger(__name__)
@@ -300,8 +302,9 @@ class MakingGraph:
                 # Save one created room(cycle) information in 3DCityDB
                 # There is currently no process for processing door or window information
                 # If door and window processes are added, result_wall, result_ceiling, result_floor information is returned and the process is executed
-                make_gml_file2 = gml.PointCloudToCityGML([ceiling], [floor], wall_list, [], [])
-                make_gml_file2.MakeRoomObject()
+                if make_gml:
+                    make_gml_file2 = gml.PointCloudToCityGML([ceiling], [floor], wall_list, [], [])
+                    make_gml_file2.MakeRoomObject()
         PointCloudUtils.visual_graph3(result_ceiling)
         return result_ceiling, result_floor, result_wall
 

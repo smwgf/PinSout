@@ -13,7 +13,7 @@ logger.addHandler(handler)
 """  db connect  """
 
 user = 'postgres'
-password = 'dprt'
+password = '1234'
 host_product = 'localhost'
 dbname = 'CityModelX'
 port = '5432'
